@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 // creating web3 provider
 const ETHEREUM_PROVIDER = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-const ADDRESS = '0x7fdaccb8d58b18b0209f05162f0bb9dcbbfc3aae';
+const ADDRESS = "0x73bbdf61b11b399190fe5dea4ed9dfa3772c3668";
 const ABI = [{"constant":true,"inputs":[],"name":"getPeople","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_age","type":"uint256"}],"name":"addPerson","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"people","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"age","type":"uint256"}],"payable":false,"type":"function"}];
 
 const peopleContract = ETHEREUM_PROVIDER.eth.contract(ABI).at(ADDRESS);
@@ -19,8 +19,8 @@ class App extends Component {
       firstNames: [],
       lastNames:[],
       ages: [],
-      userFirst: '',
-      userLast: '',
+      userFirst: undefined,
+      userLast: undefined,
       userAge: undefined
     }
   }
@@ -40,15 +40,13 @@ class App extends Component {
 
     let tableRows = [];
     _.each(this.state.firstNames, (value, index) => {
-
       tableRows.push(
         <tr key={index}>
-          <td>{this.state.firstNames[index]}</td>
-          <td>{this.state.lastNames[index]}</td>
+          <td>{ETHEREUM_PROVIDER.toAscii(this.state.firstNames[index])}</td>
+          <td>{ETHEREUM_PROVIDER.toAscii(this.state.lastNames[index])}</td>
           <td>{this.state.ages[index]}</td>
         </tr>
       )
-
     })
 
     return (
