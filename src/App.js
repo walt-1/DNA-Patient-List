@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Web3 from 'web3';
 import _ from 'lodash';
@@ -22,18 +21,41 @@ class App extends Component {
       userFirst: undefined,
       userLast: undefined,
       userAge: undefined
+
     }
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   // can see that our provider is running when the app loads
   componentWillMount() {
     var data = peopleContract.getPeople();
-    console.log(data);
     this.setState({
       firstNames: String(data[0]).split(','),
       lastNames: String(data[1]).split(','),
       ages: String(data[2]).split(',')
     })
+  }
+
+
+  handleInputChange(e) {
+    const target = e.target;
+
+    if (target.name === 'userFirst') {
+      this.setState({userFirst: target.value})
+    } else if (target.name === 'userLast') {
+      this.setState({userLast: target.value})
+    } else {
+      const number = isNaN(target.value) ? 0 : target.value
+      this.setState({userAge: number})
+    }
+
+  }
+
+  handleSubmit(e){
+    alert(this.state.userFirst + this.state.userLast + this.state.userAge);
+
+    e.preventDefault();
   }
 
   render() {
@@ -52,14 +74,14 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <form onSubmit={this.postToBlock}>
+          <form onSubmit={this.handleSubmit}>
             <label>
               First Name:
-              <input type="text" value={this.state.userFirst} />
+              <input type="text" name="userFirst" value={this.state.userFirst} onChange={this.handleInputChange} required/>
               Last Name:
-              <input type="text" value={this.state.userLast} />
+              <input type="text" name="userLast" value={this.state.userLast} onChange={this.handleInputChange} required/>
               Age:
-              <input type="text" value={this.state.userAge} />
+              <input type="text" name="userAge" value={this.state.userAge} onChange={this.handleInputChange} required/>
             </label>
             <input type="submit" value="Submit" />
           </form>
