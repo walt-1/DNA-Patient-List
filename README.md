@@ -6,7 +6,7 @@ After cloning the Repo :
 
 1. open a separate terminal window, locate to the `blockchain` folder and run `truffle migrate` to deploy the contracts onto your testrpc.
 
-1. find the hash associated with `People: ` in the migration log
+1. find the hash associated with `People: ` in the migration log, copy and paste to set `const ADDRESS = '{your-hash-here}' `
 
 1. Then locate to the root of the app and run `npm start` to serve on http://localhost:3000
 
