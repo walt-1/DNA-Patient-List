@@ -1,4 +1,4 @@
-DNA Electronic Medical Record 
+DNA Patient List 
 
 After cloning the Repo : 
 
