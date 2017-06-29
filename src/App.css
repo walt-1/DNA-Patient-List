@@ -32,12 +32,19 @@ td {
   text-transform: capitalize;
 }
 
+label {
+  font-size: 20px;
+}
+
 label input {
   margin: 0 25px 0 10px;
   width: 150px;
-  height: 18px;
+  height: 30px;
   border-radius: 1px;
   border: 1px solid #fff;
+  font-size: 25px;
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
 }
 
 #submitBtn {

@@ -99,7 +99,7 @@ class App extends Component {
           <form onSubmit={this.handleSubmit}>
             <label>
               First Name:
-              <input type="text" name="userFirst" value={this.state.userFirst} onChange={this.handleInputChange} required/>
+              <input type="text" ref={(input) => { this.nameInput = input; }} name="userFirst" value={this.state.userFirst} onChange={this.handleInputChange} required/>
               Last Name:
               <input type="text" name="userLast" value={this.state.userLast} onChange={this.handleInputChange} required/>
               DNA:
