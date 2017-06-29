@@ -1,24 +1,54 @@
 .App {
   text-align: center;
+  font-family: 'Roboto Slab', serif;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background:
+    linear-gradient(to bottom,  rgba(0, 134, 134, .8), rgba(1, 68, 83, 1)),
+    url("https://senfal.com/wp-content/uploads/2017/05/Blokchain-845x321.png") center ;
+  background-size: cover;
+  height: 240px;
   padding: 20px;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
+.App-content {
+  font-size: 1.2em;
+  margin: 50px;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+table {
+  margin: auto;
+  text-align: left;
+}
+
+th {
+  width: 200px;
+}
+
+td {
+  text-transform: capitalize;
+}
+
+label input {
+  margin: 0 25px 0 10px;
+  width: 150px;
+  height: 18px;
+  border-radius: 1px;
+  border: 1px solid #fff;
+}
+
+#submitBtn {
+  margin: 40px 0;
+  padding: 5px 20px;
+  background-color: #fff;
+  border-radius: 3px;
+  border: 2px solid #fff;
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1em;
+  color: #ec6f02;
 }

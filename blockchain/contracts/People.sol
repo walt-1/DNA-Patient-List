@@ -10,6 +10,8 @@ contract People {
     uint age;
   }
 
+  event personAdded(bytes32 indexed _firstName, bytes32 indexed _lastName, uint indexed _age);
+
   function addPerson(bytes32 _firstName, bytes32 _lastName, uint _age) returns (bool success) {
     Person memory newPerson;
     newPerson.firstName = _firstName;
@@ -17,6 +19,7 @@ contract People {
     newPerson.age = _age;
 
     people.push(newPerson);
+    personAdded(newPerson.firstName, newPerson.lastName, newPerson.age);
     return true;
 
   }

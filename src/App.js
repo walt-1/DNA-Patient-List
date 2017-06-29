@@ -5,10 +5,10 @@ import _ from 'lodash';
 
 // creating web3 provider
 const ETHEREUM_PROVIDER = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-const ADDRESS = "0x73bbdf61b11b399190fe5dea4ed9dfa3772c3668";
-const ABI = [{"constant":true,"inputs":[],"name":"getPeople","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_age","type":"uint256"}],"name":"addPerson","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"people","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"age","type":"uint256"}],"payable":false,"type":"function"}];
-
+const ADDRESS = "0x982adf986d0c6479c7f631ba9cd1d0ca5f16d977";
+const ABI = [{"constant":true,"inputs":[],"name":"getPeople","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_age","type":"uint256"}],"name":"addPerson","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"people","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"age","type":"uint256"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_firstName","type":"bytes32"},{"indexed":true,"name":"_lastName","type":"bytes32"},{"indexed":true,"name":"_age","type":"uint256"}],"name":"personAdded","type":"event"}]
 const peopleContract = ETHEREUM_PROVIDER.eth.contract(ABI).at(ADDRESS);
+const coinbase = ETHEREUM_PROVIDER.eth.coinbase;
 
 class App extends Component {
 
@@ -29,12 +29,19 @@ class App extends Component {
 
   // can see that our provider is running when the app loads
   componentWillMount() {
+
+    peopleContract.personAdded({ fromBlock: ETHEREUM_PROVIDER.eth.currentBlock, toBlock: 'latest' }).watch((err, res) => {
+      console.log(res.args);
+
+    })
+
     var data = peopleContract.getPeople();
     this.setState({
       firstNames: String(data[0]).split(','),
       lastNames: String(data[1]).split(','),
       ages: String(data[2]).split(',')
     })
+    console.log(this.state);
   }
 
 
@@ -53,9 +60,8 @@ class App extends Component {
   }
 
   handleSubmit(e){
-    alert(this.state.userFirst + this.state.userLast + this.state.userAge);
-
-    e.preventDefault();
+    // every state change requires options object
+    peopleContract.addPerson(this.state.userFirst, this.state.userLast , this.state.userAge, { from: coinbase, gas: 210000 }, (err, res) => {} )
   }
 
   render() {
@@ -74,16 +80,18 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
+          <h1>PATIENT INFO</h1>
           <form onSubmit={this.handleSubmit}>
             <label>
               First Name:
               <input type="text" name="userFirst" value={this.state.userFirst} onChange={this.handleInputChange} required/>
               Last Name:
               <input type="text" name="userLast" value={this.state.userLast} onChange={this.handleInputChange} required/>
-              Age:
+              DNA:
               <input type="text" name="userAge" value={this.state.userAge} onChange={this.handleInputChange} required/>
             </label>
-            <input type="submit" value="Submit" />
+            <br />
+            <input id="submitBtn" type="submit" value="Enter" />
           </form>
         </div>
         <div className="App-content">
@@ -92,13 +100,16 @@ class App extends Component {
             <tr>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Age</th>
+              <th>DNA</th>
             </tr>
           </thead>
           <tbody>
             {tableRows}
           </tbody>
           </table>
+        </div>
+        <div>
+
         </div>
       </div>
     );
