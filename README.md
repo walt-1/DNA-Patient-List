@@ -8,6 +8,8 @@ After cloning the Repo :
 
 1. find the hash associated with `People: ` in the migration log, copy and paste to set `const ADDRESS = '{your-hash-here}' ` in the src/App.js file
 
-1. Then locate to the root of the app and run `npm start` to serve on http://localhost:3000
+1. Then locate to the root of the app and run `npm install` 
+
+1. run `npm start` to serve on http://localhost:3000
 
 * Requires MetaMask Chrome extension to access private network on http://localhost:8545
