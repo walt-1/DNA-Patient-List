@@ -7,19 +7,19 @@ contract Patient {
   struct Patient {
     bytes32 firstName;
     bytes32 lastName;
-    uint age;
+    uint dna;
   }
 
-  event patientAdded(bytes32 indexed _firstName, bytes32 indexed _lastName, uint indexed _age);
+  event patientAdded(bytes32 indexed _firstName, bytes32 indexed _lastName, uint indexed _dna);
 
-  function addPatient(bytes32 _firstName, bytes32 _lastName, uint _age) returns (bool success) {
+  function addPatient(bytes32 _firstName, bytes32 _lastName, uint _dna) returns (bool success) {
     Patient memory newPatient;
     newPatient.firstName = _firstName;
     newPatient.lastName = _lastName;
-    newPatient.age = _age;
+    newPatient.dna = _dna;
 
     patient.push(newPatient);
-    patientAdded(newPatient.firstName, newPatient.lastName, newPatient.age);
+    patientAdded(newPatient.firstName, newPatient.lastName, newPatient.dna);
     return true;
 
   }
@@ -30,7 +30,7 @@ contract Patient {
 
     bytes32[] memory firstNames = new bytes32[](length);
     bytes32[] memory lastNames = new bytes32[](length);
-    uint[] memory ages = new uint[](length);
+    uint[] memory dnas = new uint[](length);
 
     for (uint i = 0; i < patient.length; i ++) {
       Patient memory currentPatient;
@@ -38,10 +38,10 @@ contract Patient {
 
       firstNames[i] = currentPatient.firstName;
       lastNames[i] = currentPatient.lastName;
-      ages[i] = currentPatient.age;
+      dnas[i] = currentPatient.dna;
     }
 
-    return (firstNames,lastNames,ages);
+    return (firstNames,lastNames,dnas);
 
   }
 
