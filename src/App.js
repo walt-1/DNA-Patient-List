@@ -5,8 +5,8 @@ import _ from 'lodash';
 
 // creating web3 provider
 const ETHEREUM_PROVIDER = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-const ADDRESS = "0x982adf986d0c6479c7f631ba9cd1d0ca5f16d977";
-const ABI = [{"constant":true,"inputs":[],"name":"getPeople","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_age","type":"uint256"}],"name":"addPerson","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"people","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"age","type":"uint256"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_firstName","type":"bytes32"},{"indexed":true,"name":"_lastName","type":"bytes32"},{"indexed":true,"name":"_age","type":"uint256"}],"name":"personAdded","type":"event"}]
+const ADDRESS = "0x4e9a69ca5f2a9a90dc043c19e286822c1c8fba3e";
+const ABI = [{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"patient","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"age","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPatient","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_age","type":"uint256"}],"name":"addPatient","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_firstName","type":"bytes32"},{"indexed":true,"name":"_lastName","type":"bytes32"},{"indexed":true,"name":"_age","type":"uint256"}],"name":"patientAdded","type":"event"}]
 const peopleContract = ETHEREUM_PROVIDER.eth.contract(ABI).at(ADDRESS);
 const coinbase = ETHEREUM_PROVIDER.eth.coinbase;
 
@@ -30,12 +30,12 @@ class App extends Component {
   // can see that our provider is running when the app loads
   componentWillMount() {
 
-    peopleContract.personAdded({ fromBlock: ETHEREUM_PROVIDER.eth.currentBlock, toBlock: 'latest' }).watch((err, res) => {
+    peopleContract.patientAdded({ fromBlock: ETHEREUM_PROVIDER.eth.currentBlock, toBlock: 'latest' }).watch((err, res) => {
       console.log(res.args);
 
     })
 
-    var data = peopleContract.getPeople();
+    var data = peopleContract.getPatient();
     this.setState({
       firstNames: String(data[0]).split(','),
       lastNames: String(data[1]).split(','),
@@ -61,7 +61,7 @@ class App extends Component {
 
   handleSubmit(e){
     // every state change requires options object
-    peopleContract.addPerson(this.state.userFirst, this.state.userLast , this.state.userAge, { from: coinbase, gas: 210000 }, (err, res) => {} )
+    peopleContract.addPatient(this.state.userFirst, this.state.userLast , this.state.userAge, { from: coinbase, gas: 210000 }, (err, res) => {} )
   }
 
   render() {

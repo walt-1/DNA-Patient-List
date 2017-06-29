@@ -1,5 +1,5 @@
-const People = artifacts.require("./People.sol");
+const Patient = artifacts.require("./Patient.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(People);
+  deployer.deploy(Patient);
 };
