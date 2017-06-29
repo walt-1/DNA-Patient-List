@@ -10,6 +10,9 @@ const ADDRESS = "0x2cb8b666d87e79abd87c09688f147397cad7b727";
 const ABI = [{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"patient","outputs":[{"name":"firstName","type":"bytes32"},{"name":"lastName","type":"bytes32"},{"name":"dna","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPatient","outputs":[{"name":"","type":"bytes32[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_firstName","type":"bytes32"},{"name":"_lastName","type":"bytes32"},{"name":"_dna","type":"uint256"}],"name":"addPatient","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_firstName","type":"bytes32"},{"indexed":true,"name":"_lastName","type":"bytes32"},{"indexed":true,"name":"_dna","type":"uint256"}],"name":"patientAdded","type":"event"}]
 const peopleContract = ETHEREUM_PROVIDER.eth.contract(ABI).at(ADDRESS);
 const coinbase = ETHEREUM_PROVIDER.eth.coinbase;
+
+
+
 class App extends Component {
 
   constructor(props) {
@@ -21,7 +24,6 @@ class App extends Component {
       userFirst: undefined,
       userLast: undefined,
       userDNA: undefined
-
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -30,18 +32,26 @@ class App extends Component {
   // can see that our provider is running when the app loads
   componentWillMount() {
 
+
     peopleContract.patientAdded({ fromBlock: ETHEREUM_PROVIDER.eth.currentBlock, toBlock: 'latest' }).watch((err, res) => {
       console.log(res.args);
-
     })
+    // populates state with blockchain data
+    this.updateTable()
+  }
 
+  updateTable(){
     var data = peopleContract.getPatient();
+    // converts
     this.setState({
       firstNames: String(data[0]).split(','),
       lastNames: String(data[1]).split(','),
-      dnas: String(data[2]).split(',')
+      dnas: String(data[2]).split(','),
+      userFirst: '',
+      userLast: '',
+      userDNA: ''
     })
-    console.log(this.state);
+
   }
 
 
@@ -60,8 +70,13 @@ class App extends Component {
   }
 
   handleSubmit(e){
+    e.preventDefault()
     // every state change requires options object
-    peopleContract.addPatient(this.state.userFirst, this.state.userLast , this.state.userDNA, { from: coinbase, gas: 210000 }, (err, res) => {} )
+    peopleContract.addPatient(this.state.userFirst, this.state.userLast , this.state.userDNA, { from: coinbase, gas: 210000 }, (err, res) => {
+      // repopulates state with new data
+      this.updateTable()
+    })
+
   }
 
   render() {
