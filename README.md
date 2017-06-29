@@ -2,7 +2,7 @@ DNA Electronic Medical Record
 
 After cloning the Repo : 
 
-1. open a terminal and run `tesrpc` [ `-s 'test'` flags will always create the same account addresses ]
+1. open a terminal and run `testrpc` [ `-s 'test'` flags will always create the same account addresses ]
 
 1. open a separate terminal window, locate to the `blockchain` folder and run `truffle migrate` to deploy the contracts onto your testrpc.
 
